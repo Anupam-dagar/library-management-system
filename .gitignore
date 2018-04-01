@@ -1,6 +1,8 @@
+project
 myvenv
 *.pyc
 *.pyc
 *~
+.idea
 __pycache__
 .DS_Store
