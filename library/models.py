@@ -9,7 +9,7 @@ class Books(models.Model):
     book_id = models.CharField(max_length=10, blank=False, primary_key=True)    
     title = models.CharField(max_length=200, blank=False)
     author = models.ForeignKey('Author')
-    isbn = models.IntegerField(blank=False)
+    isbn = models.BigIntegerField(blank=False)
     publisher = models.ForeignKey('Publisher')
 
     def __str__(self):
@@ -23,7 +23,6 @@ class Books(models.Model):
 
 class Author(models.Model):
     firstname = models.CharField(max_length=200, blank=False)
-    middlename = models.CharField(max_length=200, blank=True, null=True)
     lastname = models.CharField(max_length=200, blank=False)
     dob = models.DateField(blank=False)
 
@@ -82,7 +81,6 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     enrollment_no = models.CharField(max_length=10, blank=False)
     first_name = models.CharField(max_length=100, blank=False)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     department = models.CharField(max_length=10, choices=BRANCH_CHOICES)
@@ -100,7 +98,6 @@ class Student(models.Model):
 class Librarian(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, blank=False)
-    middle_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=False)
     librarian_id = models.CharField(max_length=20, blank=False)
 
