@@ -50,6 +50,15 @@
 						<h1>{{ user.username }}
 						</h1>
 					</div>
+					<form method="get" action="{% url 'home' %}">
+						Search Books:<input style="color: black;" type="text" name="q" id="id_q" value="{{ query }}"/>
+						<input type="submit" value="Search" />
+					  </form>
+					  {% for det in detail %}
+					  <div>
+						{{ det }}
+					  </div>
+					  {% endfor %}
 				</div>
 			</div>
 		</div>
