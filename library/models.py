@@ -27,10 +27,10 @@ class Author(models.Model):
     dob = models.DateField(blank=False)
 
     def __str__(self):
-        return "Author " + self.firstname + " " + self.lastname
+        return self.firstname + " " + self.lastname
 
     def __unicode__(self):
-        return "Author " + self.firstname + " " + self.lastname
+        return self.firstname + " " + self.lastname
 
     class Meta:
         ordering = ['lastname']

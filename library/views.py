@@ -12,7 +12,7 @@ def home(request):
         except ValueError:
             query = None
         if query:
-            detail = Books.objects.filter(author__firstname=query)
+            detail = Books.objects.filter(author__firstname__iexact=query)
             if not detail.exists():
                 detail = ['No results found!']
             return render(request, 'library/index.html', {'detail': detail})

@@ -1,6 +1,7 @@
 {% extends 'library/base.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
+{% load i18n %}
 {% block title %}Login{% endblock %}
 {% block extend_head %}
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
@@ -17,7 +18,7 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
         		</button>
-        		<a class="navbar-brand" href="../presentation.html">IIIT Allahabad Library Management System</a>
+        		<a class="navbar-brand" href="#">IIIT Allahabad Library Management System</a>
         	</div>
 
         	{% comment %} <div class="collpase navbar-collapse">
@@ -157,7 +158,8 @@
 			<div class="row">
 				<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 					<div class="card card-signup">
-						<form class="form" method="" action="login-page.html">
+						<form class="form" method="post">
+							{% csrf_token %}							
 							<div class="header header-primary text-center">
 								<h4 class="card-title">Log in</h4>
 								<div class="social-line">
@@ -177,14 +179,14 @@
 									<span class="input-group-addon">
 										<i class="material-icons">face</i>
 									</span>
-									<input type="text" class="form-control" placeholder="Username...">
+									{% render_field form.username class="form-control" placeholder="Username" %}
 								</div>
 
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="material-icons">lock_outline</i>
 									</span>
-									<input type="password" placeholder="Password..." class="form-control" />
+									{% render_field form.password class="form-control" placeholder="Password" %}
 								</div>
 
 								<!-- If you want to add a checkbox to this form, uncomment this code
@@ -197,7 +199,7 @@
 								</div> -->
 							</div>
 							<div class="footer text-center">
-								<a href="login-page.html#pablo" class="btn btn-primary btn-simple btn-wd btn-lg">Login</a>
+									<button class="btn btn-primary btn-simple btn-wd btn-lg" type="submit" name="submit" value="{% trans 'Log in' %}">LOGIN</button>
 							</div>
 						</form>
 					</div>
