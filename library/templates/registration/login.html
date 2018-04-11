@@ -197,6 +197,9 @@
 										Subscribe to newsletter
 									</label>
 								</div> -->
+								{% if form.errors %}
+								<h5 class="text-center" style="color:red;"><b>Wrong username or password</b></h5>
+								{% endif %}
 							</div>
 							<div class="footer text-center">
 									<button class="btn btn-primary btn-simple btn-wd btn-lg" type="submit" name="submit" value="{% trans 'Log in' %}">LOGIN</button>
