@@ -33,11 +33,11 @@
 </nav>
 
 
-<div class="page-header header-filter" filter-color="" style="background-image: url('../../static/img/login/bg.jpg'); background-size: cover; background-position: top center;">
+<div class="page-header header-filter" >
 	<div class="container">
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
-				<div class="card card-signup">
+				<div class="card card-signup"  style="margin-top: -6vh;">
 					<h2 class="card-title text-center">Register</h2>
 					<div class="row">
 						<div class="col-md-5 col-md-offset-1">
@@ -65,17 +65,7 @@
 								</div>
 							</div>
 
-							<div class="info info-horizontal">
-								<div class="icon icon-info">
-									<i class="material-icons">group</i>
-								</div>
-								<div class="description">
-									<h4 class="info-title">Built Audience</h4>
-									<p class="description">
-										There is also a Fully Customizable CMS Admin Dashboard for this product.
-									</p>
-								</div>
-							</div>
+							
 						</div>
 						<div class="col-md-5 ">
 							<form class="form" method="" action="signup-page.html">
@@ -105,7 +95,7 @@
 
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" name="optionsCheckboxes" checked>
+											<input type="checkbox" name="optionsCheckboxes" unchecked>
 											I agree to the <a href="signup-page.html#something">terms and conditions</a>.
 										</label>
 									</div>
@@ -117,22 +107,31 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
+			
 		</div>
 	</div>
-
-	<footer class="footer">
-		<div class="container">	          
-			<div class="copyright text-center">
-				&copy; <script>document.write(new Date().getFullYear())</script> Made with <i class="fa fa-heart heart"></i> by <a href="https://github.com/Anupam-dagar" target="_blank">Anupam Dagar</a> and <a href="https://github.com/M1doriya" target="_blank">Abhishek Acharya</a>
+	<footer class="footer navbar-fixed-bottom">
+			<div class="container">	          
+				<div class="copyright text-center">
+					&copy; <script>document.write(new Date().getFullYear())</script>Made with  <i class="fa fa-heart heart"></i> by <a href="https://github.com/Anupam-dagar" target="_blank"><b>Anupam Dagar</b></a> and <a href="https://github.com/M1doriya" target="_blank"><b>Abhishek Acharya</b></a>
+				</div>
 			</div>
-		</div>
-	</footer>
-
+			</footer>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+	$(document).ready(function(){
+		$('body').addClass('signup-page');
+		$('body').css('background-image', 'url(\'../../static/img/login/bg.jpg\')');
+		$('body').css('background-repeat', 'no-repeat');
+		$('body').css('background-size', '100% 100%');
+		$('body').find('a').each(function() {
+			$(this).attr('href', '#');
+		});
+	});
+</script>
 
-
-</body>
 {% endblock %}
 
