@@ -66,25 +66,26 @@ class Student(models.Model):
     )
 
     SEMESTER_CHOICES = (
-        (1, '1st'),
-        (2, '2nd'),
-        (3, '3rd'),
-        (4, '4th'),
-        (5, '5th'),
-        (6, '6th'),
-        (7, '7th'),
-        (8, '8th'),
-        (9, '9th'),
-        (10, '10th'),
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5),
+        (6, 6),
+        (7, 7),
+        (8, 8),
+        (9, 9),
+        (10, 10),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    enrollment_no = models.CharField(max_length=10, blank=False)
+    enrollment_no = models.CharField(max_length=100, blank=False)
     first_name = models.CharField(max_length=100, blank=False)
     last_name = models.CharField(max_length=100, blank=False)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    department = models.CharField(max_length=10, choices=BRANCH_CHOICES)
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES)
+    department = models.CharField(max_length=100, choices=BRANCH_CHOICES)
     semester = models.IntegerField(choices=SEMESTER_CHOICES)
+    fullname = models.CharField(max_length=200, blank=False, null=False)
 
     def __str__(self):
         return self.user.username + " " + self.enrollment_no
@@ -100,7 +101,7 @@ class Librarian(models.Model):
     first_name = models.CharField(max_length=100, blank=False)
     last_name = models.CharField(max_length=100, blank=False)
     librarian_id = models.CharField(max_length=20, blank=False)
-
+    fullname = models.CharField(max_length=100, blank=False, null=False)
     def __str__(self):
         return self.user.username + " " + self.librarian_id
 
