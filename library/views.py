@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Author, Books
+from .models import Author, Books, Student, Librarian
 
 # Create your views here.
 def home(request):
@@ -20,6 +20,9 @@ def home(request):
                 detail = Books.objects.filter(title__icontains=query)
             if q_type == 'isbn':
                 detail = Books.objects.filter(isbn=query)
+            # if q_type == 'users':
+            #     query = query.split()
+            #     detail = User.objects.filter(first_name__icontains=query)
             if not detail:
                 detail = ['No results found!']
             return render(request, 'library/index.html', {'detail': detail})            

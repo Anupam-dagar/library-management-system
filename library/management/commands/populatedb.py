@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand
-from library.dbfactories import AuthorFactory, BookFactory, PublisherFactory
+from library.dbfactories import AuthorFactory, BookFactory, PublisherFactory, UserFactory, StudentFactory, LibrarianFactory
 
 class Command(BaseCommand):
     help = 'Seeds the database.'
 
     def add_arguments(self, parser):
         parser.add_argument('--users',
-            default=200,
+            default=400,
             type=int,
             help='The number of fake users to create.')
 
@@ -15,3 +15,6 @@ class Command(BaseCommand):
             PublisherFactory.create()
             AuthorFactory.create()
             BookFactory.create()
+            UserFactory.create()
+            StudentFactory.create()
+            LibrarianFactory.create()
