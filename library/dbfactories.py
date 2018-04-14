@@ -11,6 +11,7 @@ class AuthorFactory(factory.django.DjangoModelFactory):
     firstname = factory.Faker('first_name')
     lastname = factory.Faker('last_name')
     dob = FuzzyDate(datetime.date(2000, 1, 1))
+    fullname = factory.LazyAttribute(lambda p: '{} {}'.format(p.firstname, p.lastname))
 
 class PublisherFactory(factory.django.DjangoModelFactory):
     class Meta:

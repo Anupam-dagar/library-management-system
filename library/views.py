@@ -8,14 +8,21 @@ from .models import Author, Books
 def home(request):
     if request.user.is_authenticated():
         try:
+            print(request.GET)
             query = request.GET.get('q')
         except ValueError:
             query = None
         if query:
-            detail = Books.objects.filter(author__firstname__iexact=query)
-            if not detail.exists():
+            q_type = request.GET.get('type')
+            if q_type == 'author':
+                detail = Books.objects.filter(author__fullname__icontains=query)                    
+            if q_type == 'title':
+                detail = Books.objects.filter(title__icontains=query)
+            if q_type == 'isbn':
+                detail = Books.objects.filter(isbn=query)
+            if not detail:
                 detail = ['No results found!']
-            return render(request, 'library/index.html', {'detail': detail})
+            return render(request, 'library/index.html', {'detail': detail})            
         return render(request, 'library/index.html', {})
     else:
         return redirect('accounts/login')

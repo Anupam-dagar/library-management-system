@@ -47,16 +47,43 @@
 						</h1>
 					</div>
 					<div class="card card-raised card-form-horizontal">
-						<div class="card-content">
-							<form method="get" action="{% url 'home' %}">
-								<div class="row">
-									<div class="col-sm-8">
+							<div class="card-content">
+								<form method="get" action="{% url 'home' %}" id="search">
+									<div class="row">
+										<div class="col-sm-8">
 
-										<div class="input-group">
-											<span class="input-group-addon">
-												<i class="material-icons">book</i>
-											</span>
-											<input type="text" name="q" id="id_q" value="{{ query }}" placeholder="Enter author's first name" class="form-control" />
+											<div class="input-group">
+												<span class="input-group-addon">
+													<i class="material-icons">book</i>
+												</span>
+												<input type="text" name="q" id="id_q" value="{{ query }}" placeholder="Enter author's first name" class="form-control" />
+												<div class="row">
+												<div class="col-sm-3">
+													<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">Title
+													</label>
+												</div>
+											</div>
+												<div class="col-sm-3">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">Author
+													</label>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">ISBN
+													</label>
+												</div>
+											</div>
+											</div>
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<input type="submit" class="btn btn-primary btn-block" value="Search" />
 										</div>
 									</div>
 									<div class="col-sm-4">
@@ -73,44 +100,50 @@
 	</div>
 </div>
 {% if detail %}
-<div class="main main-raised">
-	<div class="section section-basic">
-		<div class="container">
-			<div id="contentAreas" class="cd-section">
-				<!--                 tables -->
-				<div id="tables">
-					<div class="title">
-						<h3>Search Results</h3>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="table-responsive">
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th class="text-center"><b>Serial No.</b></th>													
-											<th class="text-center"><b>Book id</b></th>
-											<th><b>Title</b></th>
-											<th><b>Author</b></th>
-											<th><b>isbn</b></th>
-											<th><b>Publisher</b></th>
-										</tr>
-									</thead>
-									<tbody>
-										{% for det in detail %}
-										<tr>
-											<td class="text-center">{{ forloop.counter }}</td>											
-											<td class="text-center">{{ det.book_id }}</td>
-											<td>{{ det.title }}</td>
-											<td>{{ det.author }}</td>
-											<td>{{ det.isbn }}</td>
-											<td>{{ det.publisher }}</td>
-										</tr>
-										{% endfor %}
-									</tbody>
-								</table>
-							</div>
+	<div class="main main-raised">
+		<div class="section section-basic">
+	    	<div class="container">
 
+
+	
+
+				<div id="contentAreas" class="cd-section">
+
+
+
+		<!--                 tables -->
+		            <div id="tables">
+		                <div class="title">
+		                    <h3>Search Results</h3>
+		                </div>
+		                <div class="row">
+		                    <div class="col-md-12 ">
+		                        <div class="table-responsive">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th class="text-center"><b>Serial No.</b></th>													
+													<th class="text-center"><b>Book id</b></th>
+													<th><b>Title</b></th>
+													<th><b>Author</b></th>
+													<th><b>isbn</b></th>
+													<th><b>Publisher</b></th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for det in detail %}
+												<tr>
+													<td class="text-center">{{ forloop.counter }}</td>													
+													<td class="text-center">{{ det.book_id }}</td>
+													<td>{{ det.title }}</td>
+													<td>{{ det.author.firstname }}</td>
+													<td>{{ det.author.lastname }}</td>
+													<td>{{ det.publisher }}</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>
+										</div>
 						</div>
 					</div>
 				</div>
