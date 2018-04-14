@@ -48,7 +48,7 @@
 					</div>
 					<div class="card card-raised card-form-horizontal">
 							<div class="card-content">
-								<form method="get" action="{% url 'home' %}">
+								<form method="get" action="{% url 'home' %}" id="search">
 									<div class="row">
 										<div class="col-sm-8">
 
@@ -57,6 +57,29 @@
 													<i class="material-icons">book</i>
 												</span>
 												<input type="text" name="q" id="id_q" value="{{ query }}" placeholder="Enter author's first name" class="form-control" />
+												<div class="row">
+												<div class="col-sm-3">
+													<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">Title
+													</label>
+												</div>
+											</div>
+												<div class="col-sm-3">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">Author
+													</label>
+												</div>
+											</div>
+											<div class="col-sm-3">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox" name="type" value="title">ISBN
+													</label>
+												</div>
+											</div>
+											</div>
 											</div>
 										</div>
 										<div class="col-sm-4">
@@ -109,8 +132,8 @@
 													<td class="text-center">{{ forloop.counter }}</td>													
 													<td class="text-center">{{ det.book_id }}</td>
 													<td>{{ det.title }}</td>
-													<td>{{ det.author }}</td>
-													<td>{{ det.isbn }}</td>
+													<td>{{ det.author.firstname }}</td>
+													<td>{{ det.author.lastname }}</td>
 													<td>{{ det.publisher }}</td>
 												</tr>
 												{% endfor %}
