@@ -3,10 +3,9 @@
 {% load widget_tweaks %}
 {% block title %}Home{% endblock %}
 {% block extend_head %}
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-<link href="{% static 'css/material-kit.css' %}" rel="stylesheet"/>
-{% endblock %}
-{% block content %}
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
+/>
+<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> {% endblock %} {% block content %}
 <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -47,103 +46,112 @@
 						</h1>
 					</div>
 					<div class="card card-raised card-form-horizontal">
-							<div class="card-content">
-								<form method="get" action="{% url 'home' %}" id="search">
-									<div class="row">
-										<div class="col-sm-8">
+						<div class="card-content">
+							<form method="get" action="{% url 'home' %}" id="search">
+								<div class="row">
+									<div class="col-sm-8">
 
-											<div class="input-group">
-												<span class="input-group-addon">
-													<i class="material-icons">book</i>
-												</span>
-												<input type="text" name="q" id="id_q" value="{{ query }}" placeholder="Enter author's first name" class="form-control" />
-												<div class="row">
+										<div class="input-group">
+											<span class="input-group-addon">
+												<i class="material-icons">book</i>
+											</span>
+											<input type="text" name="q" id="id_q" value="{{ query }}" placeholder="Enter author's first name" class="form-control" />
+											<div class="row">
 												<div class="col-sm-3">
 													<div class="checkbox">
-													<label>
-														<input type="checkbox" name="type" value="title">Title
-													</label>
+														<label>
+															<input type="checkbox" name="type" value="title">Title
+														</label>
+													</div>
 												</div>
-											</div>
 												<div class="col-sm-3">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" name="type" value="title">Author
-													</label>
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" name="type" value="title">Author
+														</label>
+													</div>
+												</div>
+												<div class="col-sm-3">
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" name="type" value="title">ISBN
+														</label>
+													</div>
 												</div>
 											</div>
-											<div class="col-sm-3">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" name="type" value="title">ISBN
-													</label>
-												</div>
-											</div>
-											</div>
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<input type="submit" class="btn btn-primary btn-block" value="Search" />
 										</div>
 									</div>
 									<div class="col-sm-4">
-										<input type="submit" class="btn btn-primary btn-block" value="Search" />
+										<input id="submit" type="submit" class="btn btn-primary btn-block" value="Search" />
 									</div>
 								</div>
-							</form>
 						</div>
+						</form>
 					</div>
-
 				</div>
+
 			</div>
 		</div>
 	</div>
 </div>
+</div>
 {% if detail %}
-	<div class="main main-raised">
-		<div class="section section-basic">
-	    	<div class="container">
-
-
-	
-
-				<div id="contentAreas" class="cd-section">
+<div class="main main-raised">
+	<div class="section section-basic">
+		<div class="container">
 
 
 
-		<!--                 tables -->
-		            <div id="tables">
-		                <div class="title">
-		                    <h3>Search Results</h3>
-		                </div>
-		                <div class="row">
-		                    <div class="col-md-12 ">
-		                        <div class="table-responsive">
-										<table class="table table-striped">
-											<thead>
-												<tr>
-													<th class="text-center"><b>Serial No.</b></th>													
-													<th class="text-center"><b>Book id</b></th>
-													<th><b>Title</b></th>
-													<th><b>Author</b></th>
-													<th><b>isbn</b></th>
-													<th><b>Publisher</b></th>
-												</tr>
-											</thead>
-											<tbody>
-												{% for det in detail %}
-												<tr>
-													<td class="text-center">{{ forloop.counter }}</td>													
-													<td class="text-center">{{ det.book_id }}</td>
-													<td>{{ det.title }}</td>
-													<td>{{ det.author.firstname }}</td>
-													<td>{{ det.author.lastname }}</td>
-													<td>{{ det.publisher }}</td>
-												</tr>
-												{% endfor %}
-											</tbody>
-										</table>
-										</div>
+
+			<div id="contentAreas" class="cd-section">
+
+
+
+				<!--                 tables -->
+				<div id="tables">
+					<div class="title">
+						<h3>Search Results</h3>
+					</div>
+					<div class="row">
+						<div class="col-md-12 ">
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th class="text-center">
+												<b>Serial No.</b>
+											</th>
+											<th class="text-center">
+												<b>Book id</b>
+											</th>
+											<th>
+												<b>Title</b>
+											</th>
+											<th>
+												<b>Author</b>
+											</th>
+											<th>
+												<b>isbn</b>
+											</th>
+											<th>
+												<b>Publisher</b>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for det in detail %}
+										<tr>
+											<td class="text-center">{{ forloop.counter }}</td>
+											<td class="text-center">{{ det.book_id }}</td>
+											<td>{{ det.title }}</td>
+											<td>{{ det.author.firstname }}</td>
+											<td>{{ det.author.lastname }}</td>
+											<td>{{ det.publisher }}</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -153,15 +161,24 @@
 		</div>
 	</div>
 </div>
-{% endif %}
-{% endblock %}
-{% block scripts %}
+{% endif %} {% endblock %} {% block scripts %}
 <script>
-	$(document).ready(function(){
+	$(document).ready(function () {
+
+		var checkboxes = $("input[type='checkbox']"),
+			submitButt = $("input[type='submit']");
+		$('#submit').attr('disabled', 'disabled');
+		checkboxes.click(function () {
+			submitButt.attr("disabled", !checkboxes.is(":checked"));
+		});
+	});
+</script>
+<script>
+	$(document).ready(function () {
 		$('#abc').css('background-image', 'url(\'../../static/img/login/bg.jpg\')');
 		$('#abc').css('background-repeat', 'no-repeat');
 		$('#abc').css('background-size', '100% 100%');
-		$('body').find('a').each(function() {
+		$('body').find('a').each(function () {
 			$(this).attr('href', '#');
 		});
 		$('#logout').attr('href', "{% url 'auth_logout' %}?next=/");
@@ -172,12 +189,12 @@
 
 <script type="text/javascript">
 
-	$(document).ready(function(){
+	$(document).ready(function () {
 		var slider = document.getElementById('sliderRegular');
 
 		noUiSlider.create(slider, {
 			start: 40,
-			connect: [true,false],
+			connect: [true, false],
 			range: {
 				min: 0,
 				max: 100
@@ -187,11 +204,11 @@
 		var slider2 = document.getElementById('sliderDouble');
 
 		noUiSlider.create(slider2, {
-			start: [ 20, 60 ],
+			start: [20, 60],
 			connect: true,
 			range: {
-				min:  0,
-				max:  100
+				min: 0,
+				max: 100
 			}
 		});
 
@@ -200,5 +217,4 @@
 		materialKit.initFormExtendedDatetimepickers();
 
 	});
-</script>
-{% endblock %}
+</script> {% endblock %}
