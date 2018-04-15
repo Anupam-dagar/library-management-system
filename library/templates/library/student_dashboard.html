@@ -1,14 +1,71 @@
 {% extends 'library/base.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
-{% block title %}Admin{% endblock %}
-{% block extend_head %}
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
-/>
-<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
+{% block title %}Admin
 {% endblock %} 
+{% block extend_head %}
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
+<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
+{% endblock %}
 {% block content %}
-{% for det in detail %}
-{{ det }}<br>
-{% endfor %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-center">
+                <b>Serial No.</b>
+            </th>
+            <th class="text-center">
+                <b>Book id</b>
+            </th>
+            <th>
+                <b>Title</b>
+            </th>
+            <th>
+                <b>Author</b>
+            </th>
+            <th>
+                <b>isbn</b>
+            </th>
+            <th>
+                <b>Publisher</b>
+            </th>
+            <th>
+                <b>due date</b>
+            </th>
+            <th>
+                <b>return date</b>
+            </th>
+            <th>
+                <b>request_issue</b>
+            </th>
+            <th>
+                <b>issue status</b>
+            </th>
+            <th>
+                <b>fine</b>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for det in detail %}
+        <tr>
+            <td class="text-center">{{ forloop.counter }}</td>
+            {% if det.book_id %}
+            <td class="text-center">{{ det.book_id }}</td>
+            {% else %}
+            <td class="text-center">{{ det }}</td>
+            {% endif %}
+            <td>{{ det.title }}</td>
+            <td>{{ det.author }}</td>
+            <td>{{ det.isbn }}</td>
+            <td>{{ det.publisher }}</td>
+            <td>{{ det.due_date }}</td>
+            <td>{{ det.return_date }}</td>
+            <td>{{ det.request_issue }}</td>
+            <td>{{ det.issue_status }}</td>
+            <td>{{ det.fine }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
