@@ -12,10 +12,6 @@ class StudentForm(forms.ModelForm):
         exclude = ['user']
 
 class BookForm(forms.ModelForm):
-    widgets = {
-		'request_issue': forms.CheckboxInput(attrs={'onclick':'this.form.submit();'})
-	}
     class Meta:
         model = Books
-        fields = ('request_issue',)
-    
+        fields = ('book_id', 'title', 'author', 'isbn', 'publisher')    

@@ -1,0 +1,16 @@
+{% extends 'library/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}Admin
+{% endblock %} 
+{% block extend_head %}
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
+<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
+{% endblock %}
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

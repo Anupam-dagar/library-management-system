@@ -6,6 +6,7 @@ from .models import Author, Books, Student, Librarian
 from .forms import UserForm, StudentForm, BookForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from datetime import datetime, timedelta
 # Create your views here.
 def home(request):
     if request.user.is_authenticated():
@@ -45,12 +46,46 @@ def student_dashboard(request):
     detail = Books.objects.filter(request_issue=True)
     return render(request, 'library/student_dashboard.html', {'detail': detail})
 
+def staff_issue(request):
+    detail = Books.objects.filter(request_issue=True)
+    return render(request, 'library/staff_issue.html', {'detail': detail})    
+
+def staff_addbook(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = BookForm(request.POST)
+            if form.is_valid():
+                detail = form.save(commit=False)
+                detail.save()
+                form = BookForm
+                return render(request, 'library/staff_addbook.html', {'form': form})
+        else:
+            form = BookForm
+        return render(request, 'library/staff_addbook.html', {'form': form})
+    else:
+        return redirect('accounts/login')
+
 def change_request_issue(request):
     request_issue = request.GET.get('request_val')
     bookid = request.GET.get('bookid')
     myobject = Books.objects.filter(book_id=bookid).exists()
     if myobject:
         Books.objects.filter(book_id=bookid).update(request_issue=request_issue)
+        boolval = 'True'
+    else:
+        boolval = 'False'
+    data = {
+        'valdb': boolval
+    }
+    return JsonResponse(data)
+
+def change_issue_status(request):
+    issue_status = request.GET.get('issue_val')
+    bookid = request.GET.get('bookid')
+    myobject = Books.objects.filter(book_id=bookid).exists()
+    duedate = datetime.now().date() + timedelta(days=14)
+    if myobject:
+        Books.objects.filter(book_id=bookid).update(issue_status=issue_status, due_date=duedate)
         boolval = 'True'
     else:
         boolval = 'False'

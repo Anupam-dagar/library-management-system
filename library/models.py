@@ -12,6 +12,7 @@ class Books(models.Model):
     isbn = models.BigIntegerField(blank=False)
     publisher = models.ForeignKey('Publisher')
     due_date = models.DateField(blank=True, default="2000-10-10")
+    issue_date = models.DateField(blank=True, auto_now=True)
     return_date = models.DateField(blank=True, default="2001-10-10")
     request_issue = models.BooleanField(default=False)
     issue_status = models.BooleanField(default=False)
@@ -22,10 +23,6 @@ class Books(models.Model):
 
     def __unicode__(self):
         return self.book_id + " - " + self.title
-
-    def save(self, *args, **kwargs):
-        self.due_date = datetime.now().date() + timedelta(days=14)
-        super(Books, self).save()
 
     class Meta:
         ordering = ['title']
