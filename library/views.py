@@ -7,6 +7,9 @@ from .forms import UserForm, StudentForm, BookForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from datetime import datetime, timedelta
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+
 # Create your views here.
 def home(request):
     if request.user.is_authenticated():
@@ -24,17 +27,6 @@ def home(request):
                 detail = Books.objects.filter(isbn=query)
             if q_type == 'users':
                 detail = Student.objects.filter(fullname__icontains=query) or Librarian.objects.filter(fullname__icontains=query)
-            # if detail:
-            #     if request.method == "POST":
-            #         form = IssueForm(request.POST)
-            #         if form.is_valid():
-            #             detail1 = form.save(commit=False)
-            #             detail1.user = request.user
-            #             detail1.user = 
-            #             detail1.save()
-            #             return HttpResponse("done")
-            #         else:
-            #         form = IssueForm
             if not detail:
                 detail = ['No results found!']
             return render(request, 'library/index.html', {'detail': detail})            
@@ -68,9 +60,10 @@ def staff_addbook(request):
 def change_request_issue(request):
     request_issue = request.GET.get('request_val')
     bookid = request.GET.get('bookid')
-    myobject = Books.objects.filter(book_id=bookid).exists()
-    if myobject:
-        Books.objects.filter(book_id=bookid).update(request_issue=request_issue)
+    email = request.GET.get('usermail')
+    myobject = Books.objects.filter(book_id=bookid)
+    if myobject.exists():
+        myobject.update(request_issue=request_issue, email=email)
         boolval = 'True'
     else:
         boolval = 'False'
@@ -82,17 +75,23 @@ def change_request_issue(request):
 def change_issue_status(request):
     issue_status = request.GET.get('issue_val')
     bookid = request.GET.get('bookid')
-    myobject = Books.objects.filter(book_id=bookid).exists()
+    myobject = Books.objects.filter(book_id=bookid)
     duedate = datetime.now().date() + timedelta(days=14)
     returndate = datetime.now().date()
     issuedate = datetime.now().date()
-    if myobject:
-        Books.objects.filter(book_id=bookid).update(issue_status=issue_status)
+    email_subject = 'IIIT Allahabad Library - Book Issue Notice'
+    recipient_mail = myobject[0].email.encode('utf-8')
+    if myobject.exists():
+        myobject.update(issue_status=issue_status)
         if issue_status == 'True':
-            Books.objects.filter(book_id=bookid).update(issue_date=issuedate, due_date=duedate, return_date=None, fine=0)            
+            myobject.update(issue_date=issuedate, due_date=duedate, return_date=None, fine=0)
+            email_body = 'The following book has been issued to you.\n\n'\
+                 'Book: ' + myobject[0].title.encode('utf-8') + '\n\n'\
+                 'Due Date: ' + myobject[0].due_date.strftime('%d/%m/%Y') + '\n'
+            # send_mail(email_subject, email_body, "Anupam Dagar <anupam@dagar.com>", [recipient_mail])
         if issue_status == 'False':
             fine = (returndate - issuedate).days
-            Books.objects.filter(book_id=bookid).update(return_date=returndate, due_date=None, fine=fine)
+            myobject.update(return_date=returndate, due_date=None, fine=fine)
         boolval = 'True'
     else:
         boolval = 'False'

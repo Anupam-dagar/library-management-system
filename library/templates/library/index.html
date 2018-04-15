@@ -159,12 +159,9 @@
 										{% for det in detail %}
 										<tr>
 											<td class="text-center">{{ forloop.counter }}</td>
-											{% if det.book_id %}
 											<td class="text-center">{{ det.book_id }}</td>
-											{% else %}
-											<td class="text-center">{{ det }}</td>											
-											{% endif %}
-											<td>{{ det.title }}</td>
+											
+											<td id="a">{{ det.title }}</td>
 											<td>{{ det.author.firstname }}</td>
 											<td>{{ det.author.lastname }}</td>
 											<td>{{ det.publisher }}</td>
@@ -185,6 +182,7 @@
 														</div>
 														{% endif %}
 													<input type="hidden" class="bookid" name="bookid" value="{{ det.book_id }}">
+													<input type="hidden" class="usermail" name="usermail" value="{{ request.user.email }}">
 												</form>
 												</td>
 										</tr>
@@ -208,12 +206,14 @@
 				console.log(form);
 				request_val = $(this).val();
 				bookid = $(this).parent().parent().siblings("input").next().next().val();
+				usermail = $(this).parent().parent().siblings("input").next().next().next().val()
 				e.preventDefault();
 				$.ajax({
 					url: '{% url "change_request_issue" %}',
 					data: {
 					  'request_val': request_val,
-					  'bookid': bookid
+					  'bookid': bookid,
+					  'usermail': usermail
 					},
 					dataType: 'json',
 					success: function (data) {

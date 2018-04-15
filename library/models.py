@@ -17,6 +17,7 @@ class Books(models.Model):
     request_issue = models.BooleanField(default=False)
     issue_status = models.BooleanField(default=False)
     fine = models.IntegerField(default=0)
+    email = models.EmailField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.book_id + " - " + self.title
