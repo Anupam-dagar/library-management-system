@@ -153,6 +153,9 @@
 											<th>
 												<b>Request issue</b>
 											</th>
+											<th>
+												<b>Issue status</b>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -184,7 +187,14 @@
 													<input type="hidden" class="bookid" name="bookid" value="{{ det.book_id }}">
 													<input type="hidden" class="usermail" name="usermail" value="{{ request.user.email }}">
 												</form>
-												</td>
+											</td>
+											{% if det.issue_status is  False %}
+											<td>Not Issued</td>
+											{% else %}
+											<script>$("input:checkbox").attr('disabled', 'disabled');</script>
+											<td>Issued </td>
+											
+											{% endif %}
 										</tr>
 										{% endfor %}										
 									</tbody>
@@ -198,8 +208,16 @@
 
 		</div>
 	</div>
+	<footer class="footer ">
+		<div class="container">	          
+			<div class="copyright text-center">
+				&copy; <script>document.write(new Date().getFullYear())</script> Made with  <i class="fa fa-heart heart"></i> by <a href="https://github.com/Anupam-dagar" target="_blank"><b>Anupam Dagar</b></a> and <a href="https://github.com/M1doriya" target="_blank"><b>Abhishek Acharya</b></a>
+			</div>
+		</div>
+		</footer>
 </div>
-{% endblock %} {% block scripts %}
+{% endblock %} 
+{% block scripts %}
 		<script>
 			$(".request_issue").change(function (e) {
 				var form = $(this).parent().parent().parent();
@@ -251,6 +269,7 @@
 
 
 <script type="text/javascript">
+
 
 	$(document).ready(function () {
 		var slider = document.getElementById('sliderRegular');

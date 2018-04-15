@@ -1,3 +1,4 @@
+.vscode
 project
 myvenv
 *.pyc
@@ -6,3 +7,4 @@ myvenv
 .idea
 __pycache__
 .DS_Store
+env
