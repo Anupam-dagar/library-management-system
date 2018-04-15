@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
-
+from datetime import datetime, timedelta
 # Create your models here.
 class Books(models.Model):
     book_id = models.CharField(max_length=10, blank=False, primary_key=True)    
@@ -11,12 +11,21 @@ class Books(models.Model):
     author = models.ForeignKey('Author')
     isbn = models.BigIntegerField(blank=False)
     publisher = models.ForeignKey('Publisher')
+    due_date = models.DateField(blank=True, default="2000-10-10")
+    return_date = models.DateField(blank=True, default="2001-10-10")
+    request_issue = models.BooleanField(default=False)
+    issue_status = models.BooleanField(default=False)
+    fine = models.IntegerField(default=0)
 
     def __str__(self):
         return self.book_id + " - " + self.title
 
     def __unicode__(self):
         return self.book_id + " - " + self.title
+
+    def save(self, *args, **kwargs):
+        self.due_date = datetime.now().date() + timedelta(days=14)
+        super(Books, self).save()
 
     class Meta:
         ordering = ['title']
@@ -110,3 +119,14 @@ class Librarian(models.Model):
 
     class Meta:
         ordering = ['first_name']
+
+class Issue(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    book = models.OneToOneField(Books, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username + ' ' + self.book.book_id
+
+    def __unicode__(self):
+        return self.user.username + ' ' + self.book.book_id
+    

@@ -5,7 +5,9 @@
 {% block extend_head %}
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
 />
-<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> {% endblock %} {% block content %}
+<link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
+{% endblock %} 
+{% block content %}
 <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -67,14 +69,14 @@
 												<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="title">Author
+															<input type="checkbox" name="type" value="author">Author
 														</label>
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="title">ISBN
+															<input type="checkbox" name="type" value="isbn">ISBN
 														</label>
 													</div>
 												</div>
@@ -108,7 +110,6 @@
 	</div>
 </div>
 </div>
-{% if detail %}
 <div class="main main-raised">
 	<div class="section section-basic">
 		<div class="container">
@@ -155,13 +156,35 @@
 										{% for det in detail %}
 										<tr>
 											<td class="text-center">{{ forloop.counter }}</td>
+											{% if det.book_id %}
 											<td class="text-center">{{ det.book_id }}</td>
-											<td>{{ det.title }}</td>
+											{% else %}
+											<td class="text-center">{{ det }}</td>											
+											{% endif %}
+											<td>
+												<form method="post" id="myform">
+													{% csrf_token %} 
+													{% if not det.request_issue %}
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" id="request_issue" name="request_issue" value="True">
+														</label>
+													</div>
+													{% else %}
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" id="request_issue" name="request_issue" value="False" checked>
+														</label>
+													</div>
+													{% endif %}
+												<input type="hidden" id="bookid" name="bookid" value="{{ det.book_id }}">
+											</form>
+											</td>
 											<td>{{ det.author.firstname }}</td>
 											<td>{{ det.author.lastname }}</td>
 											<td>{{ det.publisher }}</td>
 										</tr>
-										{% endfor %}
+										{% endfor %}										
 									</tbody>
 								</table>
 							</div>
@@ -174,7 +197,30 @@
 		</div>
 	</div>
 </div>
-{% endif %} {% endblock %} {% block scripts %}
+{% endblock %} {% block scripts %}
+		<script>
+			$("#request_issue").change(function (e) {
+				console.log("changfe");
+				var form = $('#myform');
+				request_val = $(this).val();
+				bookid = $('#bookid').val();
+				e.preventDefault();
+				$.ajax({
+					url: '{% url "change_request_issue" %}',
+					data: {
+					  'request_val': request_val,
+					  'bookid': bookid
+					},
+					dataType: 'json',
+					success: function (data) {
+					  if (data.valdb) {
+						console.log("Issue has been requested");
+						form.get(0).submit();
+					  }
+					}
+				  });
+			});
+		</script>
 <script>
 	$(document).ready(function () {
 
@@ -230,4 +276,5 @@
 		materialKit.initFormExtendedDatetimepickers();
 
 	});
-</script> {% endblock %}
+</script> 
+{% endblock %}
