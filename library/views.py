@@ -84,8 +84,15 @@ def change_issue_status(request):
     bookid = request.GET.get('bookid')
     myobject = Books.objects.filter(book_id=bookid).exists()
     duedate = datetime.now().date() + timedelta(days=14)
+    returndate = datetime.now().date()
+    issuedate = datetime.now().date()
     if myobject:
-        Books.objects.filter(book_id=bookid).update(issue_status=issue_status, due_date=duedate)
+        Books.objects.filter(book_id=bookid).update(issue_status=issue_status)
+        if issue_status == 'True':
+            Books.objects.filter(book_id=bookid).update(issue_date=issuedate, due_date=duedate, return_date=None, fine=0)            
+        if issue_status == 'False':
+            fine = (returndate - issuedate).days
+            Books.objects.filter(book_id=bookid).update(return_date=returndate, due_date=None, fine=fine)
         boolval = 'True'
     else:
         boolval = 'False'
