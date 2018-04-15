@@ -35,27 +35,37 @@ def home(request):
         return redirect('accounts/login')
 
 def student_dashboard(request):
-    detail = Books.objects.filter(request_issue=True)
-    return render(request, 'library/student_dashboard.html', {'detail': detail})
+    if request.user.is_authenticated():
+        if request.user.groups.filter(name='student').exists():    
+            detail = Books.objects.filter(request_issue=True)
+            return render(request, 'library/student_dashboard.html', {'detail': detail})
+        return HttpResponse("You don't have specific permsission to access this page.")
+    return redirect('../accounts/login')
 
 def staff_issue(request):
-    detail = Books.objects.filter(request_issue=True)
-    return render(request, 'library/staff_issue.html', {'detail': detail})    
+    if request.user.is_authenticated():    
+        if request.user.groups.filter(name='staff').exists():
+            detail = Books.objects.filter(request_issue=True)
+            return render(request, 'library/staff_issue.html', {'detail': detail})
+        return HttpResponse("You don't have specific permsission to access this page.")    
+    return render('../accounts/login')
 
 def staff_addbook(request):
     if request.user.is_authenticated():
-        if request.method == 'POST':
-            form = BookForm(request.POST)
-            if form.is_valid():
-                detail = form.save(commit=False)
-                detail.save()
+        if request.user.groups.filter(name='staff').exists():        
+            if request.method == 'POST':
+                form = BookForm(request.POST)
+                if form.is_valid():
+                    detail = form.save(commit=False)
+                    detail.save()
+                    form = BookForm
+                    return render(request, 'library/staff_addbook.html', {'form': form})
+            else:
                 form = BookForm
-                return render(request, 'library/staff_addbook.html', {'form': form})
-        else:
-            form = BookForm
-        return render(request, 'library/staff_addbook.html', {'form': form})
+            return render(request, 'library/staff_addbook.html', {'form': form})
+        return HttpResponse("You don't have specific permsission to access this page.")
     else:
-        return redirect('accounts/login')
+        return redirect('../accounts/login')
 
 def change_request_issue(request):
     request_issue = request.GET.get('request_val')
@@ -102,30 +112,34 @@ def change_issue_status(request):
 
 def create_user(request):
     if request.user.is_authenticated():
-        if request.method == "POST":
-            form = UserForm(request.POST)
-            if form.is_valid():
-                detail = form.save(commit=False)
-                detail.save()
-                return redirect('create_student', username=detail.username, staff=request.user.username)
-        else:	
-            form = UserForm
-        return render(request, 'library/adminpage.html', {'form':form})
+        if request.user.groups.filter(name='admin').exists():
+            if request.method == "POST":
+                form = UserForm(request.POST)
+                if form.is_valid():
+                    detail = form.save(commit=False)
+                    detail.save()
+                    return redirect('create_student', username=detail.username, staff=request.user.username)
+            else:	
+                form = UserForm
+            return render(request, 'library/adminpage.html', {'form':form})
+        return HttpResponse("You don't have specific permsission to access this page.")
     else:
-        return render(request,'library/index.html',{})
+        return redirect('../accounts/login')
 
 def create_student(request, username, staff):
     if request.user.username == staff:
-        user_instance = get_object_or_404(User, username=username)
-        if request.method == "POST":
-            form = StudentForm(request.POST)
-            if form.is_valid():
-                detail = form.save(commit=False)
-                detail.user = user_instance
-                detail.save()
-                return HttpResponse("done")
-        else:
-            form = StudentForm
-        return render(request, 'library/adminpage.html', {'form':form})
+        if request.user.groups.filter(name='admin').exists():        
+            user_instance = get_object_or_404(User, username=username)
+            if request.method == "POST":
+                form = StudentForm(request.POST)
+                if form.is_valid():
+                    detail = form.save(commit=False)
+                    detail.user = user_instance
+                    detail.save()
+                    return HttpResponse("done")
+            else:
+                form = StudentForm
+            return render(request, 'library/adminpage.html', {'form':form})
+        return HttpResponse("You don't have specific permsission to access this page.")
     else:
-        return render(request,'library/index.html',{})
+        return redirect('../accounts/login')
