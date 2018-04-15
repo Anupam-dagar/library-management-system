@@ -46,11 +46,8 @@ def student_dashboard(request):
     return render(request, 'library/student_dashboard.html', {'detail': detail})
 
 def change_request_issue(request):
-    print(request.GET)
     request_issue = request.GET.get('request_val')
     bookid = request.GET.get('bookid')
-    print(request_issue)
-    print(bookid)
     myobject = Books.objects.filter(book_id=bookid).exists()
     if myobject:
         Books.objects.filter(book_id=bookid).update(request_issue=request_issue)

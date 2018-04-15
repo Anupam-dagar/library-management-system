@@ -150,6 +150,9 @@
 											<th>
 												<b>Publisher</b>
 											</th>
+											<th>
+												<b>Request issue</b>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -161,28 +164,29 @@
 											{% else %}
 											<td class="text-center">{{ det }}</td>											
 											{% endif %}
-											<td>
-												<form method="post" id="myform">
-													{% csrf_token %} 
-													{% if not det.request_issue %}
-													<div class="checkbox">
-														<label>
-															<input type="checkbox" id="request_issue" name="request_issue" value="True">
-														</label>
-													</div>
-													{% else %}
-													<div class="checkbox">
-														<label>
-															<input type="checkbox" id="request_issue" name="request_issue" value="False" checked>
-														</label>
-													</div>
-													{% endif %}
-												<input type="hidden" id="bookid" name="bookid" value="{{ det.book_id }}">
-											</form>
-											</td>
+											<td>{{ det.title }}</td>
 											<td>{{ det.author.firstname }}</td>
 											<td>{{ det.author.lastname }}</td>
 											<td>{{ det.publisher }}</td>
+											<td>
+													<form method="post" class="myform">
+														{% csrf_token %} 
+														{% if not det.request_issue %}
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" class="request_issue" name="request_issue" value="True">
+															</label>
+														</div>
+														{% else %}
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" class="request_issue" name="request_issue" value="False" checked>
+															</label>
+														</div>
+														{% endif %}
+													<input type="hidden" class="bookid" name="bookid" value="{{ det.book_id }}">
+												</form>
+												</td>
 										</tr>
 										{% endfor %}										
 									</tbody>
@@ -199,11 +203,11 @@
 </div>
 {% endblock %} {% block scripts %}
 		<script>
-			$("#request_issue").change(function (e) {
-				console.log("changfe");
-				var form = $('#myform');
+			$(".request_issue").change(function (e) {
+				var form = $(this).parent().parent().parent();
+				console.log(form);
 				request_val = $(this).val();
-				bookid = $('#bookid').val();
+				bookid = $(this).parent().parent().siblings("input").next().next().val();
 				e.preventDefault();
 				$.ajax({
 					url: '{% url "change_request_issue" %}',
@@ -214,8 +218,8 @@
 					dataType: 'json',
 					success: function (data) {
 					  if (data.valdb) {
-						console.log("Issue has been requested");
-						form.get(0).submit();
+						console.log("Issue request has been sent");
+						form.submit();
 					  }
 					}
 				  });
