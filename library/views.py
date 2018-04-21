@@ -3,13 +3,13 @@ from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Author, Books, Student, Librarian
-from .forms import UserForm, StudentForm, BookForm
+from .forms import UserForm, StudentForm, BookForm, StaffForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
-
+from django.contrib.auth.models import Group
 # Create your views here.
 def home(request):
     if request.user.is_authenticated():
@@ -119,7 +119,10 @@ def create_user(request):
                 if form.is_valid():
                     detail = form.save(commit=False)
                     detail.save()
-                    return redirect('create_student', username=detail.username, staff=request.user.username)
+                    if request.POST.get('acctype') == 'student':
+                        return redirect('create_student', username=detail.username, admin=request.user.username)
+                    else:
+                        return redirect('create_staff', username=detail.username, admin=request.user.username)
             else:	
                 form = UserForm
             return render(request, 'library/adminpage.html', {'form':form})
@@ -127,8 +130,8 @@ def create_user(request):
     else:
         return redirect('../accounts/login')
 
-def create_student(request, username, staff):
-    if request.user.username == staff:
+def create_student(request, username, admin):
+    if request.user.username == admin:
         if request.user.groups.filter(name='admin').exists():        
             user_instance = get_object_or_404(User, username=username)
             if request.method == "POST":
@@ -136,11 +139,32 @@ def create_student(request, username, staff):
                 if form.is_valid():
                     detail = form.save(commit=False)
                     detail.user = user_instance
+                    detail.fullname = detail.first_name + ' ' + detail.last_name
                     detail.save()
-                    return HttpResponse("done")
+                    detail.user.groups.add(Group.objects.get(name='student'))
+                    return redirect('create_user')
             else:
                 form = StudentForm
-            return render(request, 'library/adminpage.html', {'form':form})
+            return render(request, 'library/createstudent.html', {'form':form})
+        return HttpResponse("You don't have specific permsission to access this page.")
+    else:
+        return redirect('../accounts/login')
+
+def create_staff(request, username, admin):
+    if request.user.username == admin:
+        if request.user.groups.filter(name='admin').exists():        
+            user_instance = get_object_or_404(User, username=username)
+            if request.method == "POST":
+                form = StaffForm(request.POST)
+                if form.is_valid():
+                    detail = form.save(commit=False)
+                    detail.user = user_instance
+                    detail.save()
+                    detail.user.groups.add(Group.objects.get(name='staff'))
+                    return redirect('create_user')
+            else:
+                form = StaffForm
+            return render(request, 'library/createstaff.html', {'form':form})
         return HttpResponse("You don't have specific permsission to access this page.")
     else:
         return redirect('../accounts/login')

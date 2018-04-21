@@ -73,54 +73,40 @@
 	<div class="page-header header-filter" >
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+				<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
 					<div class="card card-signup">
 						<form class="form" method="post">
 							{% csrf_token %}							
 							<div class="header header-primary text-center">
-								<h4 class="card-title">Add User</h4>
+								<h4 class="card-title">Add Student</h4>
 							</div>
 							<div class="card-content">
-
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="material-icons">face</i>
-									</span>
-									{% render_field form.username class="form-control" placeholder="Username" %}
+                                    </span>
+									{% render_field form.librarian_id class="form-control" placeholder="Librarian Id" %}
 								</div>
 
                                 <div class="input-group">
                                         <span class="input-group-addon">
                                             <i class="material-icons">email</i>
                                         </span>
-                                        {% render_field form.email class="form-control" placeholder="Email Address" %}
+                                        {% render_field form.first_name class="form-control" placeholder="First Name" %}
                                 </div>
 
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="material-icons">lock_outline</i>
 									</span>
-									{% render_field form.password class="form-control" placeholder="Password" %}
-								</div>
-
-								<div class="checkbox">
-									<label>
-										<input class="acctype" name="acctype" type="checkbox" name="optionsCheckboxes" value="student">
-										Student
-									</label>
-                                </div> 
-                                <div class="checkbox">
-                                        <label>
-                                            <input class="acctype" name="acctype" type="checkbox" name="optionsCheckboxes" value="staff">
-                                            Staff
-                                        </label>
-                                    </div> 
+									{% render_field form.last_name class="form-control" placeholder="Last Name" %}
+                                </div>
 								{% comment %} {% if form.errors %}
 								<h5 class="text-center" style="color:red;"><b>Wrong username or password</b></h5>
 								{% endif %} {% endcomment %}
 							</div>
 							<div class="footer text-center">
-									<button class="btn btn-primary btn-simple btn-wd btn-lg" type="submit" name="submit" value="{% trans 'Create User' %}">Create User</button>
+									<button class="btn btn-primary btn-simple btn-wd btn-lg" type="submit" name="submit" value="{% trans 'Create Student' %}">Create Student</button>
 							</div>
 						</form>
 					</div>
