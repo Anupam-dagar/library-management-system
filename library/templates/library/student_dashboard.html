@@ -1,14 +1,14 @@
 {% extends 'library/base.html' %}
 {% load staticfiles %}
 {% load widget_tweaks %}
-{% block title %}Admin
+{% block title %}Dashboard
 {% endblock %} 
 {% block extend_head %}
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
 <link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
 {% endblock %}
 {% block content %}
-<nav class="navbar navbar-default navbar-transparent navbar-fixed-top navbar-color-on-scroll" color-on-scroll=" " id="sectionsNav">
+{% comment %} <nav class="navbar navbar-default navbar-transparent navbar-fixed-top navbar-color-on-scroll" color-on-scroll=" " id="sectionsNav">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -41,7 +41,7 @@
             </ul>
         </div>
     </div>
-</nav>
+</nav> {% endcomment %}
 
 <div class="page-header header-filter clear-filter" data-parallax="true" style="background-image: url('assets/img/bg0.jpg');height:30vh;">
 </div>
