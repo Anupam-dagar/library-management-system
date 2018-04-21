@@ -99,7 +99,7 @@ def change_issue_status(request):
             email_body = 'The following book has been issued to you.\n\n'\
                  'Book: ' + myobject[0].title.encode('utf-8') + '\n\n'\
                  'Due Date: ' + myobject[0].due_date.strftime('%d/%m/%Y') + '\n'
-            # send_mail(email_subject, email_body, "Anupam Dagar <anupam@dagar.com>", [recipient_mail])
+            send_mail(email_subject, email_body, "Anupam Dagar <anupam@dagar.com>", [recipient_mail])
         if issue_status == 'False':
             fine = (returndate - issuedate).days
             myobject.update(return_date=returndate, due_date=None, fine=fine)
