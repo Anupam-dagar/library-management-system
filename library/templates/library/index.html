@@ -27,12 +27,7 @@
 					{% if request.user|has_group:"admin" %}
 					<li>
 						<a href="{% url 'create_user' %}">
-								<i class="material-icons">content_paste</i>issue books
-						</a>
-					</li>
-					<li>
-						<a href="{% url 'staff_addbook' %}">
-								<i class="material-icons">add_circle</i>add books
+								<i class="material-icons">content_paste</i>create user
 						</a>
 					</li>
 					{% endif %}
@@ -93,28 +88,28 @@
 												<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="title">Title
+															<input class="searchtype" type="checkbox" name="type" value="title">Title
 														</label>
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="author">Author
+															<input class="searchtype" type="checkbox" name="type" value="author">Author
 														</label>
 													</div>
 												</div>
 												<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="isbn">ISBN
+															<input class="searchtype" type="checkbox" name="type" value="isbn">ISBN
 														</label>
 													</div>
 												</div>
 											<div class="col-sm-3">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="type" value="users">USERS
+															<input class="searchtype" type="checkbox" name="type" value="users">USERS
 														</label>
 													</div>
 												</div>
@@ -163,7 +158,7 @@
 							<div class="table-responsive">
 								<table class="table table-striped">
 									{% if request.GET.type == 'users' %}
-									{% if det.enrollment_no %}
+									{% if detail.0.enrollment_no %}
 									<thead>
 											<tr>
 												<th class="text-center">
@@ -339,30 +334,37 @@
 {% endif %}
 {% endblock %} 
 {% block scripts %}
-		<script>
-			$(".request_issue").change(function (e) {
-				var form = $(this).parent().parent().parent();
-				console.log(form);
-				request_val = $(this).val();
-				bookid = $(this).parent().parent().siblings("input").next().next().val();
-				usermail = $(this).parent().parent().siblings("input").next().next().next().val()
-				e.preventDefault();
-				$.ajax({
-					url: '{% url "change_request_issue" %}',
-					data: {
-					  'request_val': request_val,
-					  'bookid': bookid,
-					  'usermail': usermail
-					},
-					dataType: 'json',
-					success: function (data) {
-					  if (data.valdb) {
-						console.log("Issue request has been sent");
-						form.submit();
-					  }
-					}
-				  });
+<script>
+		$(document).ready(function(){
+			$('input.searchtype').on('change', function() {
+				$('input.searchtype').not(this).prop('checked', false);  
 			});
+		});
+	</script>
+		<script>
+				$(".request_issue").change(function (e) {
+					var form = $(this).parent().parent().parent();
+					console.log(form);
+					request_val = $(this).val();
+					bookid = $(this).parent().parent().siblings("input").next().next().val();
+					usermail = $(this).parent().parent().siblings("input").next().next().next().val()
+					e.preventDefault();
+					$.ajax({
+						url: '{% url "change_request_issue" %}',
+						data: {
+						  'request_val': request_val,
+						  'bookid': bookid,
+						  'usermail': usermail
+						},
+						dataType: 'json',
+						success: function (data) {
+						  if (data.valdb) {
+							console.log("Issue request has been sent");
+							form.submit();
+						  }
+						}
+					  });
+				});
 		</script>
 <script>
 	$(document).ready(function () {

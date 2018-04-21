@@ -177,6 +177,29 @@
 {% endblock %}
 {% block scripts %}
 <script>
+        $(".request_issue").change(function (e) {
+            var form = $(this).parent().parent().parent();
+            console.log(form);
+            request_val = $(this).val();
+            bookid = $(this).parent().parent().siblings("input").next().next().val();
+            e.preventDefault();
+            $.ajax({
+                url: '{% url "change_issue_status" %}',
+                data: {
+                  'issue_val': request_val,
+                  'bookid': bookid
+                },
+                dataType: 'json',
+                success: function (data) {
+                  if (data.valdb) {
+                    console.log("book has been issued");
+                    form.submit();
+                  }
+                }
+              });
+        });
+    </script>
+<script>
     $(document).ready(function(){
     $('body').css('background', 'linear-gradient(to top, #9d50bb, #6e48aa');
 });
