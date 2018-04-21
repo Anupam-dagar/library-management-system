@@ -24,6 +24,11 @@
 		<div class="collpase navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
+					<a href="{% url 'student_dashboard' %}">
+							<i class="material-icons">dashboard</i>dashboard
+					</a>
+				</li>
+				<li>
 					<a href="#">
 						<i class="fa fa-user"></i> {{ request.user }}
 					</a>
@@ -97,10 +102,10 @@
 										</div>
 										
 									</div>
+						</form>
 									
 								</div>
 						</div>
-						</form>
 					</div>
 				</div>
 
@@ -109,6 +114,7 @@
 	</div>
 </div>
 </div>
+{% if detail %}
 <div class="main main-raised">
 	<div class="section section-basic">
 		<div class="container">
@@ -129,6 +135,83 @@
 						<div class="col-md-12 ">
 							<div class="table-responsive">
 								<table class="table table-striped">
+									{% if request.GET.type == 'users' %}
+									{% if det.enrollment_no %}
+									<thead>
+											<tr>
+												<th class="text-center">
+													<b>Serial No.</b>
+												</th>
+												<th class="text-center">
+													<b>User</b>
+												</th>
+												<th>
+													<b>Enrollment No</b>
+												</th>
+												<th>
+													<b>First Name</b>
+												</th>
+												<th>
+													<b>Last Name</b>
+												</th>
+												<th>
+													<b>Department</b>
+												</th>
+												<th>
+													<b>Semester</b>
+												</th>
+												<th>
+													<b>Gender</b>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for det in detail %}
+											<tr>
+												<td class="text-center">{{ forloop.counter }}</td>
+												<td class="text-center">{{ det.user }}</td>
+												<td>{{ det.enrollment_no }}</td>
+												<td id="a">{{ det.first_name }}</td>
+												<td>{{ det.last_name }}</td>
+												<td>{{ det.department }}</td>
+												<td>{{ det.semester }}</td>
+												<td>{{ det.gender }}</td>
+											</tr>
+											{% endfor %}	
+										</tbody>
+									{% else %}
+									<thead>
+											<tr>
+												<th class="text-center">
+													<b>Serial No.</b>
+												</th>
+												<th class="text-center">
+													<b>User</b>
+												</th>
+												<th>
+													<b>Librarian id</b>
+												</th>
+												<th>
+													<b>First Name</b>
+												</th>
+												<th>
+													<b>Last Name</b>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for det in detail %}
+											<tr>
+												<td class="text-center">{{ forloop.counter }}</td>
+												<td class="text-center">{{ det.user }}</td>
+												<td>{{ det.librarian_id }}</td>
+												<td id="a">{{ det.first_name }}</td>
+												<td>{{ det.last_name }}</td>
+											</tr>
+											{% endfor %}	
+										</tbody>
+									{% endif %}
+									{% else %}
 									<thead>
 										<tr>
 											<th class="text-center">
@@ -167,6 +250,9 @@
 											<td>{{ det.author.firstname }}</td>
 											<td>{{ det.author.lastname }}</td>
 											<td>{{ det.publisher }}</td>
+											{% if det == 'No results found!' %}
+											<td></td>
+											{% else %}
 											<td>
 													<form method="post" class="myform">
 														{% csrf_token %} 
@@ -179,7 +265,11 @@
 														{% else %}
 														<div class="checkbox">
 															<label>
+																{% if det.issue_status is True %}
+																<input type="checkbox" class="request_issue" name="request_issue" value="False" disabled checked>
+																{% else %}																
 																<input type="checkbox" class="request_issue" name="request_issue" value="False" checked>
+																{% endif %}
 															</label>
 														</div>
 														{% endif %}
@@ -187,16 +277,20 @@
 													<input type="hidden" class="usermail" name="usermail" value="{{ request.user.email }}">
 												</form>
 											</td>
+											{% endif %}
+											{% if det == "No results found!" %}
+											<td></td>
+											{% else %}
 											{% if det.issue_status is  False %}
 											<td>Not Issued</td>
 											{% else %}
-											<script>$("input:checkbox").attr('disabled', 'disabled');</script>
 											<td>Issued </td>
-											
+											{% endif %}
 											{% endif %}
 										</tr>
-										{% endfor %}										
+										{% endfor %}	
 									</tbody>
+									{% endif %}
 								</table>
 							</div>
 						</div>
@@ -215,6 +309,7 @@
 		</div>
 		</footer>
 </div>
+{% endif %}
 {% endblock %} 
 {% block scripts %}
 		<script>
@@ -258,10 +353,6 @@
 		$('#abc').css('background-image', 'url(\'../../static/img/login/bg.jpg\')');
 		$('#abc').css('background-repeat', 'no-repeat');
 		$('#abc').css('background-size', '100% 100%');
-		$('body').find('a').each(function () {
-			$(this).attr('href', '#');
-		});
-		$('#logout').attr('href', "{% url 'auth_logout' %}?next=/");
 	});
 </script>
 <!--   Core JS Files   -->
