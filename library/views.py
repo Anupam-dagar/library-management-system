@@ -26,7 +26,8 @@ def home(request):
             if q_type == 'isbn':
                 detail = Books.objects.filter(isbn=query)
             if q_type == 'users':
-                detail = Student.objects.filter(fullname__icontains=query) or Librarian.objects.filter(fullname__icontains=query)
+                detail = Student.objects.filter(fullname__icontains=query) or Student.objects.filter(enrollment_no__icontains=query) \
+                         or Librarian.objects.filter(fullname__icontains=query) or Librarian.objects.filter(librarian_id__icontains=query)
             if not detail:
                 detail = ['No results found!']
             return render(request, 'library/index.html', {'detail': detail})            
