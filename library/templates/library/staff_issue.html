@@ -8,111 +8,165 @@
 <link href="{% static 'css/material-kit.css' %}" rel="stylesheet" /> 
 {% endblock %}
 {% block content %}
+<nav class="navbar navbar-primary navbar-transparent navbar-absolute">
+	<div class="container">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="../presentation.html">IIIT Allahabad Library Management System</a>
+		</div>
 
-<div id="contactUsMap" class="big-map"></div>
-
+		<div class="collpase navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="#">
+						<i class="fa fa-user"></i> {{ request.user }}
+					</a>
+				</li>
+				<li>
+					<a href="{% url 'auth_logout' %}?next=/" id="logout" class="btn btn-white btn-simple">
+						<i class="fa fa-sign-out"></i> Logout
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="invisible" style="height: 30vh;"></div>
 <div class="main main-raised">
-    <div class="contact-content">
+    <div class="section section-basic">
         <div class="container">
-        <table class="table table-striped">
-<thead>
-    <tr>
-        <th class="text-center">
-            <b>Serial No.</b>
-        </th>
-        <th class="text-center">
-            <b>Book id</b>
-        </th>
-        <th>
-            <b>Title</b>
-        </th>
-        <th>
-            <b>Author</b>
-        </th>
-        <th>
-            <b>isbn</b>
-        </th>
-        <th>
-            <b>Publisher</b>
-        </th>
-        <th>
-            <b>due date</b>
-        </th>
-        <th>
-            <b>issue date</b>
-        </th>
-        <th>
-            <b>return date</b>
-        </th>
-        <th>
-            <b>request_issue</b>
-        </th>
-        <th>
-            <b>issue status</b>
-        </th>
-        <th>
-            <b>fine</b>
-        </th>
-        <th>
-            <b>issue now</b>
-        </th>
-    </tr>
-</thead>
-<tbody>
-    {% for det in detail %}
-    <tr>
-        <td class="text-center">{{ forloop.counter }}</td>
-        {% if det.book_id %}
-        <td class="text-center">{{ det.book_id }}</td>
-        {% else %}
-        <td class="text-center">{{ det }}</td>
-        {% endif %}
-        <td>{{ det.title }}</td>
-        <td>{{ det.author }}</td>
-        <td>{{ det.isbn }}</td>
-        <td>{{ det.publisher }}</td>
-        <td>{{ det.due_date }}</td>
-        <td>{{ det.issue_date }}</td>            
-        <td>{{ det.return_date }}</td>
-        <td>{{ det.request_issue }}</td>
-        <td>{{ det.issue_status }}</td>
-        <td>{{ det.fine }}</td>
-        <td>
-                <form method="post" class="myform">
-                        {% csrf_token %} 
-                        {% if not det.issue_status %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="request_issue" name="request_issue" value="True">
-                            </label>
+            <div id="contentAreas" class="cd-section">
+                <!--                 tables -->
+                <div id="tables">
+                    <div class="title">
+                        <h3>Search Results</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">
+                                                <b>Serial No.</b>
+                                            </th>
+                                            <th class="text-center">
+                                                <b>Book id</b>
+                                            </th>
+                                            <th>
+                                                <b>Title</b>
+                                            </th>
+                                            <th>
+                                                <b>Author</b>
+                                            </th>
+                                            <th>
+                                                <b>isbn</b>
+                                            </th>
+                                            <th>
+                                                <b>Publisher</b>
+                                            </th>
+                                            <th>
+                                                <b>due date</b>
+                                            </th>
+                                            <th>
+                                                <b>issue date</b>
+                                            </th>
+                                            <th>
+                                                <b>return date</b>
+                                            </th>
+                                            <th>
+                                                <b>request_issue</b>
+                                            </th>
+                                            <th>
+                                                <b>issue status</b>
+                                            </th>
+                                            <th>
+                                                <b>fine</b>
+                                            </th>
+                                            <th>
+                                                <b>issue now</b>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for det in detail %}
+                                        <tr>
+                                            <td class="text-center">{{ forloop.counter }}</td>
+                                            {% if det.book_id %}
+                                            <td class="text-center">{{ det.book_id }}</td>
+                                            {% else %}
+                                            <td class="text-center">{{ det }}</td>
+                                            {% endif %}
+                                            <td>{{ det.title }}</td>
+                                            <td>{{ det.author }}</td>
+                                            <td>{{ det.isbn }}</td>
+                                            <td>{{ det.publisher }}</td>
+                                            <td>{{ det.due_date }}</td>
+                                            <td>{{ det.issue_date }}</td>
+                                            <td>{{ det.return_date }}</td>
+                                            <td>{{ det.request_issue }}</td>
+                                            <td>{{ det.issue_status }}</td>
+                                            <td>{{ det.fine }}</td>
+                                            <td>
+                                                <form method="post" class="myform">
+                                                    {% csrf_token %} {% if not det.issue_status %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" class="request_issue" name="request_issue" value="True">
+                                                        </label>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" class="request_issue" name="request_issue" value="False" checked>
+                                                        </label>
+                                                    </div>
+                                                    {% endif %}
+                                                    <input type="hidden" class="bookid" name="bookid" value="{{ det.book_id }}">
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        {% else %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="request_issue" name="request_issue" value="False" checked>
-                            </label>
-                        </div>
-                        {% endif %}
-                    <input type="hidden" class="bookid" name="bookid" value="{{ det.book_id }}">
-                </form>
-        </td>
-    </tr>
-    {% endfor %}
-</tbody>
-</table>
+                    </div>
+                </div>
+                <!--                 end tables -->
+            </div>
 
         </div>
     </div>
-    <footer class="footer navbar-fixed-bottom">
-        <div class="container">	          
+</div>
+<footer class="footer ">
+        <div class="container">
             <div class="copyright text-center">
-                &copy; <script>document.write(new Date().getFullYear())</script> Made with  <i class="fa fa-heart heart"></i> by <a href="https://github.com/Anupam-dagar" target="_blank"><b>Anupam Dagar</b></a> and <a href="https://github.com/M1doriya" target="_blank"><b>Abhishek Acharya</b></a>
+                &copy;
+                <script>document.write(new Date().getFullYear())</script> Made with
+                <i class="fa fa-heart heart"></i> by
+                <a href="https://github.com/Anupam-dagar" target="_blank">
+                    <b>Anupam Dagar</b>
+                </a> and
+                <a href="https://github.com/M1doriya" target="_blank">
+                    <b>Abhishek Acharya</b>
+                </a>
             </div>
         </div>
-        </footer>
-</div>
+    </footer>
 {% endblock %}
 {% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('body').css('background-image', 'linear-gradient(to top, #370526, #570048, #710075, #8000ab, #7a12eb');
+    });
+</script>
 <script>
         $(".request_issue").change(function (e) {
             var form = $(this).parent().parent().parent();
